@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Code Exam{% endblock %}</title>
+  <link type="text/css" href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet" media="screen" />
+  <link type="text/css" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />  
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.0.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+  {% block head_extra %}
+  {% endblock head_extra %}
+</head>
+<body>
+    <div class="navbar navbar-static-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>          
+          <a class="brand" href="/">Code Exam</a>
+          <div class="nav-collapse collapse">
+            {% if user.is_authenticated %}
+              <ul class="nav">
+                <li><a href="/">Home</a></li>
+              </ul>
+              <ul class="nav pull-right">
+                <li class="dropdown">
+                  <a data-toggle="dropdown" class="dropdown-toggle" href="#">{{ user.get_full_name }} <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                  {% if user.is_staff %}
+                    <li><a href="/admin/"><i class="icon-wrench"></i> Administrativo</a></li>
+                    <li class="divider"></li>
+                  {% endif %}
+                    <li><a href="/logout/"><i class="icon-off"></i> Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+            {% else %}
+              <ul class="nav pull-right">
+                <li><a href="/login/">Login</a></li>
+              </ul>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% block header %}
+    {% endblock header %}
+
+    <div class="container" style="padding-top: 20px;">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} fade in">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+          </div>        
+        {% endfor %}
+      {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+    </div>
+    <script>$(function () { $('ul.nav li a[href="{{request.path}}"]').closest('li').addClass('active'); });</script>
+</body>
+</html>
